@@ -150,20 +150,27 @@ class ParserHooksHandler implements
 	 */
 	public function onParserAfterTidy( $parser, &$text ) {
 		global $wgMathoidCli;
-		$renderers = array_column( $this->mathLazyRenderBatch, 0 );
-		if ( $wgMathoidCli ) {
+
+		// WGL change - Check that math tags are present in the code before doing batchEvaluate
+		$currentMathLazyRenderBatch = [];
+		foreach ( $this->mathLazyRenderBatch as $key => [ $renderer, $renderParser ] ) {
+			if ( substr_count( $text, $key ) > 0 ) {
+				$currentMathLazyRenderBatch[ $key ] = [ $renderer, $renderParser ];
+			};
+		};
+		// End WGL change
+
+        $renderers = array_column( $currentMathLazyRenderBatch, 0 );
+
+        if ( $wgMathoidCli ) {
 			MathMathMLCli::batchEvaluate( $renderers );
 		} else {
 			MathMathML::batchEvaluate( $renderers );
 		}
-		foreach ( $this->mathLazyRenderBatch as $key => [ $renderer, $renderParser ] ) {
+		foreach ( $currentMathLazyRenderBatch as $key => [ $renderer, $renderParser ] ) { // WGL change
 			$value = $this->mathPostTagHook( $renderer, $renderParser );
 			$count = 0;
 			$text = str_replace( $key, $value, $text, $count );
-			if ( $count ) {
-				// This hook might be called multiple times. However once the tag is rendered the job is done.
-				unset( $this->mathLazyRenderBatch[ $key ] );
-			}
 		}
 	}
 
