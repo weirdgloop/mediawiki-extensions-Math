@@ -194,9 +194,6 @@
 				"mobile"
 			]
 		},
-		"ext.math.scripts": {
-			"scripts": "ext.math.js"
-		},
 		"mw.widgets.MathWbEntitySelector": {
 			"scripts": "mw.widgets.MathWbEntitySelector.js",
 			"dependencies": [
