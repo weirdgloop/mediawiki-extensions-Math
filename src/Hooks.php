@@ -77,7 +77,7 @@ class Hooks implements
 					$restBaseDomain
 				);
 
-				$internalRestbaseURL = "$restBaseUrl/$restBaseDomain/";
+				$internalRestbaseURL = "$restBaseUrl/$restBaseDomain/v1/";
 			} else {
 				// Default to using the external URL for internal calls as well.
 				$internalRestbaseURL = $fullRestbaseUrl;
