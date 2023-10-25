@@ -206,7 +206,7 @@ abstract class MathRenderer {
 	public function getInputHash() {
 		// TODO: What happens if $tex is empty?
 		if ( !$this->inputHash ) {
-			$dbr = MediaWikiServices::getInstance()->getDBLoadBalancerFactory()->getReplicaDatabase();
+			$dbr = wfGetDB( DB_REPLICA );
 			return $dbr->encodeBlob( pack( "H32", $this->getMd5() ) ); # Binary packed, not hex
 		}
 		return $this->inputHash;
@@ -229,7 +229,7 @@ abstract class MathRenderer {
 	 * @return bool true if read successfully, false otherwise
 	 */
 	public function readFromDatabase() {
-		$dbr = MediaWikiServices::getInstance()->getDBLoadBalancerFactory()->getReplicaDatabase();
+		$dbr = wfGetDB( DB_REPLICA );
 		$rpage = $dbr->selectRow( $this->getMathTableName(),
 			$this->dbInArray(),
 			[ 'math_inputhash' => $this->getInputHash() ],
