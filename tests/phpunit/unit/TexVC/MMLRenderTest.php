@@ -3,6 +3,7 @@
 namespace MediaWiki\Extension\Math\Tests\TexVC;
 
 use MediaWiki\Extension\Math\TexVC\MMLmappings\TexConstants\Tag;
+use MediaWiki\Extension\Math\TexVC\MMLmappings\TexConstants\TexClass;
 use MediaWiki\Extension\Math\TexVC\MMLmappings\Util\MMLTestUtil;
 use MediaWiki\Extension\Math\TexVC\TexVC;
 use MediaWikiUnitTestCase;
@@ -14,6 +15,105 @@ use MediaWikiUnitTestCase;
  * @covers \MediaWiki\Extension\Math\TexVC\TexVC
  */
 class MMLRenderTest extends MediaWikiUnitTestCase {
+	public function testLimOperatorSpacing() {
+		$input = "\liminf v, \limsup w \injlim x \projlim y";
+		$mathMLtexVC = $this->generateMML( $input );
+		$this->assertStringContainsString( "lim inf", $mathMLtexVC );
+		$this->assertStringContainsString( "lim sup", $mathMLtexVC );
+		$this->assertStringContainsString( "inj lim", $mathMLtexVC );
+		$this->assertStringContainsString( "proj lim", $mathMLtexVC );
+	}
+
+	public function testTrimNull() {
+		$input = "\\bigl( \\begin{smallmatrix}a&b\\\\ c&d\\end{smallmatrix} \\bigr)";
+		$mathMLtexVC = $this->generateMML( $input );
+		$this->assertStringContainsString( "mtable", $mathMLtexVC );
+	}
+
+	public function testApplyOperator1() {
+		$input = "\sup x";
+		$mathMLtexVC = $this->generateMML( $input );
+		$this->assertStringContainsString( "<mo>&#x2061;</mo>", $mathMLtexVC );
+	}
+
+	public function testApplyOperator2() {
+		$input = "\sup";
+		$mathMLtexVC = $this->generateMML( $input );
+		$this->assertStringNotContainsString( "<mo>&#x2061;</mo>", $mathMLtexVC );
+	}
+
+	public function testApplyOperator3() {
+		$input = "\sup \sin";
+		$mathMLtexVC = $this->generateMML( $input );
+		$this->assertStringContainsString( "<mo>&#x2061;</mo>", $mathMLtexVC );
+	}
+
+	public function testApplyFunction1() {
+		$input = "\sin x";
+		$mathMLtexVC = $this->generateMML( $input );
+		$this->assertStringContainsString( "<mo>&#x2061;</mo>", $mathMLtexVC );
+	}
+
+	public function testApplyFunction2() {
+		$input = "\sin";
+		$mathMLtexVC = $this->generateMML( $input );
+		$this->assertStringNotContainsString( "<mo>&#x2061;</mo>", $mathMLtexVC );
+	}
+
+	public function testApplyFunction3() {
+		$input = "\sin{x}";
+		$mathMLtexVC = $this->generateMML( $input );
+		$this->assertStringContainsString( "<mo>&#x2061;</mo>", $mathMLtexVC );
+	}
+
+	public function testApplyFunction4() {
+		$input = "\sin \sin";
+		$mathMLtexVC = $this->generateMML( $input );
+		$this->assertStringContainsString( "<mo>&#x2061;</mo>", $mathMLtexVC );
+	}
+
+	public function testApplyFunction5() {
+		$input = "\cos(x)";
+		$mathMLtexVC = $this->generateMML( $input );
+		$this->assertStringContainsString( "<mo>&#x2061;</mo>", $mathMLtexVC );
+	}
+
+	public function testSpacesNoMstyle() {
+		$input = "\bmod \, \!";
+		$mathMLtexVC = $this->generateMML( $input );
+		$this->assertStringContainsString( "mspace", $mathMLtexVC );
+		$this->assertStringNotContainsString( "mstyle", $mathMLtexVC );
+	}
+
+	public function testBigl() {
+		$input = "\bigl(";
+		$mathMLtexVC = $this->generateMML( $input );
+		$this->assertStringContainsString( TexClass::OPEN, $mathMLtexVC );
+	}
+
+	public function testMsupNumChild1() {
+		$input = "\sum^{^N}_{k}";
+		$mathMLtexVC = str_replace( [ "\n", " " ], "", $this->generateMML( $input ) );
+		$this->assertStringContainsString( "<msup><mi/><mrow", $mathMLtexVC );
+	}
+
+	public function testMsupNumChild2() {
+		$input = "\sum^{a^N}_{k}";
+		$mathMLtexVC = str_replace( [ "\n", " " ], "", $this->generateMML( $input ) );
+		$this->assertStringNotContainsString( "<msup><mi/><mrow", $mathMLtexVC );
+	}
+
+	public function testUndersetNumChild() {
+		$input = "\underset{\mathrm{def}}{}";
+		$mathMLtexVC = $this->generateMML( $input );
+		$this->assertStringNotContainsString( "munder", $mathMLtexVC );
+	}
+
+	public function testUndersetNumChild2() {
+		$input = "\underset{\mathrm{def}}{\mathrm{g}}";
+		$mathMLtexVC = $this->generateMML( $input );
+		$this->assertStringContainsString( "munder", $mathMLtexVC );
+	}
 
 	public function testAlignLeft() {
 		$input = " \begin{align} f(x) & = (a+b)^2 \\ & = a^2+2ab+b^2 \\ \\end{align} ";
@@ -182,7 +282,6 @@ class MMLRenderTest extends MediaWikiUnitTestCase {
 	public function testRenderSpaceSemicolon() {
 		$input = "{\\;}";
 		$mathMLtexVC = $this->generateMML( $input );
-		$this->assertStringContainsString( "mstyle", $mathMLtexVC );
 		$this->assertStringContainsString( "mspace", $mathMLtexVC, );
 	}
 
