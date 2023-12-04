@@ -13,7 +13,7 @@ use MediaWiki\Hook\ParserFirstCallInitHook;
 use MediaWiki\Hook\ParserOptionsRegisterHook;
 use MediaWiki\HookContainer\HookContainer;
 use MediaWiki\Logger\LoggerFactory;
-use MediaWiki\User\Options\UserOptionsLookup;
+use MediaWiki\User\UserOptionsLookup;
 use Parser;
 use ParserOptions;
 
