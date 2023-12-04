@@ -202,7 +202,7 @@ class BaseParsing {
 
 		$menclose = new MMLmenclose( "", [ "notation" => $notation ] );
 		$inner = $menclose->encapsulateRaw(
-			$node->getArg2()->renderMML() ) . $mpAdded->encapsulateRaw( $node->getArg1()->renderMML() );
+				$node->getArg2()->renderMML() ) . $mpAdded->encapsulateRaw( $node->getArg1()->renderMML() );
 		return $mrow->encapsulateRaw( $msup->encapsulateRaw( $inner ) );
 	}
 
@@ -236,7 +236,7 @@ class BaseParsing {
 		$inner = $mrow->encapsulateRaw( $whatIsThis .
 				$mstyle->encapsulateRaw( $mrow->encapsulateRaw( $node->getArg1()->renderMML() ) ) ) .
 			$mrow->encapsulateRaw( $whatIsThis . $mstyle->encapsulateRaw(
-				$mrow->encapsulateRaw( $node->getArg2()->renderMML() ) ) );
+					$mrow->encapsulateRaw( $node->getArg2()->renderMML() ) ) );
 
 		return $mrow->encapsulateRaw( $mfrac->encapsulateRaw( $inner ) );
 	}
@@ -253,7 +253,7 @@ class BaseParsing {
 	}
 
 	public static function genFrac( $node, $passedArgs, $operatorContent, $name,
-							 $left = null, $right = null, $thick = null, $style = null ) {
+									$left = null, $right = null, $thick = null, $style = null ) {
 		// Actually this is in AMSMethods, consider refactoring  left, right, thick, style
 		$bm = new BaseMethods();
 		$ret = $bm->checkAndParseDelimiter( $name, $node, $passedArgs, $operatorContent, true );
@@ -527,14 +527,14 @@ class BaseParsing {
 				$mspace = new MMLmspace( "", [ "width" => "0px","height" => ".25em",
 					"depth" => "0px","mathbackground" => "black" ] );
 				return $mtext->encapsulateRaw( "&#xA0;" ) .
-						$mrowRel->encapsulateRaw( $mover->encapsulateRaw(
-						  $mrowOp->encapsulateRaw(
+					$mrowRel->encapsulateRaw( $mover->encapsulateRaw(
+						$mrowOp->encapsulateRaw(
 							$mrowOrd->encapsulateRaw( $mpadded->encapsulateRaw(
 								$mo->encapsulateRaw( "&#x27F5;" ) ) ) .
-						  $mspace->getEmpty() ) .
-						  $mrowOrd->encapsulateRaw(
-							  $mo->encapsulateRaw( "&#x27F6;" )
-						  ) ) );
+							$mspace->getEmpty() ) .
+						$mrowOrd->encapsulateRaw(
+							$mo->encapsulateRaw( "&#x27F6;" )
+						) ) );
 		}
 
 		// Removed all token based parsing, since macro resolution for the supported macros can be hardcoded in php
@@ -672,7 +672,7 @@ class BaseParsing {
 		if ( $node instanceof Fun2 ) {
 			return $start . $mfrac->encapsulateRaw( $mrow->encapsulateRaw(
 						$node->getArg1()->renderMML() ) . $mrow->encapsulateRaw( $node->getArg2()->renderMML() ) )
-						. $tail;
+				. $tail;
 		}
 		$inner = "";
 		foreach ( $node->getArgs() as $arg ) {
@@ -841,12 +841,22 @@ class BaseParsing {
 	public static function mathFont( $node, $passedArgs, $operatorContent, $name, $mathvariant = null ) {
 		$mrow = new MMLmrow( TexClass::ORD, [] );
 		$args = MMLParsingUtil::getFontArgs( $name, $mathvariant, $passedArgs );
+		$state = [];
+
+		// Unicode fixes for the operators
+		if ( $mathvariant == Variants::DOUBLESTRUCK ) {
+			$state = [ "double-struck-literals" => true ];
+		} elseif ( $mathvariant == Variants::CALLIGRAPHIC ) {
+			$state = [ "calligraphic" => true ];
+		} elseif ( $mathvariant == Variants::BOLDCALLIGRAPHIC ) {
+			$state = [ "bold-calligraphic" => true ];
+		}
 
 		if ( $node instanceof Fun1nb ) {
 			// Only one mrow from Fun1nb !?
-			return $mrow->encapsulateRaw( $node->getArg()->renderMML( $args ) );
+			return $mrow->encapsulateRaw( $node->getArg()->renderMML( $args, $state ) );
 		}
-		return $mrow->encapsulateRaw( $mrow->encapsulateRaw( $node->getArg()->renderMML( $args ) ) );
+		return $mrow->encapsulateRaw( $mrow->encapsulateRaw( $node->getArg()->renderMML( $args, $state ) ) );
 	}
 
 	public static function mathChoice( $node, $passedArgs, $operatorContent, $name, $smth = null ) {
@@ -922,7 +932,7 @@ class BaseParsing {
 		}
 
 		if ( in_array( $name, [ "bigr","Bigr","biggr","Biggr" ] ) ) {
-			$passedArgs = array_merge( [ Tag::CLASSTAG => TexClass::CLOSE ] );
+			$passedArgs = array_merge( $passedArgs, [ Tag::CLASSTAG => TexClass::CLOSE ] );
 		}
 
 		$ret = $bm->checkAndParseDelimiter( $node->getArg(), $node, $passedArgs, $operatorContent, true );
@@ -969,10 +979,13 @@ class BaseParsing {
 			if ( $operatorContent["styleargs"]["displaystyle"] === "false" ) {
 				$argsOp = [ "movablelimits" => "true" ];
 			}
+			if ( $node->containsFunc( "\\nolimits" ) ) {
+				$argsOp = [ "movablelimits" => "false" ];
+			}
 		}
 		$mrow = new MMLmrow( TexClass::ORD, [] );
 		$opParsed = ( $operatorContent != null && $operatorContent["limits"] )
-					? $operatorContent["limits"]->renderMML( $argsOp ) : "";
+			? $operatorContent["limits"]->renderMML( $argsOp ) : "";
 
 		if ( $node instanceof DQ ) {
 			$munder = new MMLmunder();
@@ -980,7 +993,7 @@ class BaseParsing {
 		} elseif ( $node instanceof FQ ) {
 			$munderOver = new MMLmunderover();
 			return $munderOver->encapsulateRaw( $opParsed . $mrow->encapsulateRaw( $node->getDown()->renderMML() )
-					. $mrow->encapsulateRaw( $node->getUp()->renderMML() ) );
+				. $mrow->encapsulateRaw( $node->getUp()->renderMML() ) );
 		}
 	}
 
@@ -1029,7 +1042,8 @@ class BaseParsing {
 			$end2 = $mrowEnd->encapsulateRaw( $operatorContent["sideset"]->getUp()->renderMML() );
 
 			return $mmlMrow->encapsulateRaw( $mmlMunderOver->encapsulateRaw( $mstyle->encapsulateRaw(
-				$mmlMultiscripts->encapsulateRaw( $opParsed . $in2 . "<mprescripts/>" . $in1 ) ) . $end1 . $end2 ) );
+					$mmlMultiscripts->encapsulateRaw( $opParsed . $in2 . "<mprescripts/>" . $in1 ) )
+				. $end1 . $end2 ) );
 		}
 
 		$merror = new MMLmerror();

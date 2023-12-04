@@ -5,6 +5,7 @@ declare( strict_types = 1 );
 namespace MediaWiki\Extension\Math\WikiTexVC\Nodes;
 
 use MediaWiki\Extension\Math\WikiTexVC\MMLmappings\BaseMethods;
+use MediaWiki\Extension\Math\WikiTexVC\MMLmappings\Util\MMLParsingUtil;
 use MediaWiki\Extension\Math\WikiTexVC\MMLmappings\Util\MMLutil;
 use MediaWiki\Extension\Math\WikiTexVC\MMLnodes\MMLmi;
 use MediaWiki\Extension\Math\WikiTexVC\MMLnodes\MMLmn;
@@ -29,6 +30,20 @@ class Literal extends TexNode {
 		array_push( $this->extendedLiterals,  '\\infty', '\\emptyset' );
 	}
 
+	public function changeUnicodeFontInput( $input, $state ) {
+		/**
+		 * In some font modifications, it is required to explicitly use unicode
+		 * characters instead of (only) attributes in MathML to indicate the font.
+		 * This is mostly because of Chrome behaviour. I.e. see: https://phabricator.wikimedia.org/T352196
+		 */
+		if ( isset( $state["double-struck-literals"] ) ) {
+			return MMLParsingUtil::mapToDoubleStruckUnicode( $input );
+		} elseif ( isset( $state["calligraphic"] ) ) {
+			return MMLParsingUtil::mapToCaligraphicUnicode( $input );
+		}
+		return $input;
+	}
+
 	public function renderMML( $arguments = [], $state = [] ) {
 		if ( $this->arg === " " ) {
 			// Fixes https://gerrit.wikimedia.org/r/c/mediawiki/extensions/Math/+/961711
@@ -37,7 +52,7 @@ class Literal extends TexNode {
 		}
 		if ( is_numeric( $this->arg ) ) {
 			$mn = new MMLmn( "", $arguments );
-			return $mn->encapsulateRaw( $this->arg );
+			return $mn->encapsulateRaw( $this->changeUnicodeFontInput( $this->arg, $state ) );
 		}
 		// is important to split and find chars within curly and differentiate, see tc 459
 		$foundOperatorContent = MMLutil::initalParseLiteralExpression( $this->arg );
@@ -84,8 +99,8 @@ class Literal extends TexNode {
 
 		// Sieve for Makros
 		$ret = BaseMethods::checkAndParse( $inputP, $arguments,
-			 array_merge( $operatorContent ?? [], $state ?? [] ),
-			 $this, false );
+			array_merge( $operatorContent ?? [], $state ?? [] ),
+			$this, false );
 		if ( $ret ) {
 
 			return $ret;
@@ -103,7 +118,7 @@ class Literal extends TexNode {
 
 		// If falling through all sieves just create an MI element
 		$mi = new MMLmi( "", $arguments );
-		return $mi->encapsulateRaw( $input ); // $this->arg
+		return $mi->encapsulateRaw( $this->changeUnicodeFontInput( $input, $state ) ); // $this->arg
 	}
 
 	/**
@@ -151,7 +166,7 @@ class Literal extends TexNode {
 		if ( preg_match( $regexp, $s ) == 1 ) {
 			return [ $s ];
 		} elseif ( in_array( $s, $lit, true ) ) {
-			 return [ $s ];
+			return [ $s ];
 		} else {
 			return [];
 		}

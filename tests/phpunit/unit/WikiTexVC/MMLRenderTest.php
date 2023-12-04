@@ -15,21 +15,49 @@ use MediaWikiUnitTestCase;
  * @covers \MediaWiki\Extension\Math\WikiTexVC\TexVC
  */
 class MMLRenderTest extends MediaWikiUnitTestCase {
+	public function testMathCalUnicode() {
+		$input = "\\mathcal{O},  \\mathcal{K}, \\mathcal{t}, \\mathcal{c}";
+		$mathMLtexVC = $this->generateMML( $input );
+		$this->assertStringContainsString( '&#x1D4AA;', $mathMLtexVC );
+		$this->assertStringContainsString( '&#x1D4A6;', $mathMLtexVC );
+		$this->assertStringContainsString( '&#x1D4C9;', $mathMLtexVC );
+		$this->assertStringContainsString( '&#x1D4B8;', $mathMLtexVC );
+	}
+
+	public function testDoubleStruckLiteralUnicode() {
+		$input = "\\mathbb{Q},  \\R, \\Complex, \\mathbb{4}";
+		$mathMLtexVC = $this->generateMML( $input );
+		$this->assertStringContainsString( '&#x211A;', $mathMLtexVC );
+		$this->assertStringContainsString( '&#x211D;', $mathMLtexVC );
+		$this->assertStringContainsString( '&#x2102;', $mathMLtexVC );
+		$this->assertStringContainsString( '&#x1D7DC;', $mathMLtexVC );
+	}
+
+	public function testNoLimits() {
+		$input = "\\displaystyle \int\\nolimits_0^\infty f(x) dx";
+		$mathMLtexVC = $this->generateMML( $input );
+		$this->assertStringContainsString( 'movablelimits="false"', $mathMLtexVC );
+		$this->assertStringNotContainsString( "nolimits", $mathMLtexVC );
+	}
+
 	public function testGenfracStretching() {
 		$input = "\\tbinom{n}{k} \\dbinom{n}{k} \\binom{n}{k}";
 		$mathMLtexVC = $this->generateMML( $input );
 		$this->assertStringNotContainsString( "maxsize", $mathMLtexVC );
 	}
 
-	public function testBracketSizes() {
+	public function testBracketSizesOpen() {
 		$input = "\bigl( \Bigl( \biggl( \Biggl( ";
-		$texVC = new TexVC();
-		$options = [ "usemhchem" => true, "usemhchemtexified" => true, "oldtexvc" => true ];
-		$warnings = [];
-		$res = $texVC->check( $input, $options, $warnings, true );
-		$mml = $res['input']->renderMML();
-		$this->assertStringContainsString( 'minsize', $mml );
-		$this->assertStringContainsString( 'maxsize', $mml );
+		$mathMLtexVC = $this->generateMML( $input );
+		$this->assertStringContainsString( 'minsize', $mathMLtexVC );
+		$this->assertStringContainsString( 'maxsize', $mathMLtexVC );
+	}
+
+	public function testBracketSizesClose() {
+		$input = "\bigr) \Bigr) \biggr) \Biggr) ";
+		$mathMLtexVC = $this->generateMML( $input );
+		$this->assertStringContainsString( 'minsize', $mathMLtexVC );
+		$this->assertStringContainsString( 'maxsize', $mathMLtexVC );
 	}
 
 	public function testLimOperatorSpacing() {
