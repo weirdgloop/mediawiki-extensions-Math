@@ -12,6 +12,7 @@ namespace MediaWiki\Extension\Math;
 
 use ExtensionRegistry;
 use Maintenance;
+use MediaWiki\Config\ConfigException;
 use MediaWiki\Hook\MaintenanceRefreshLinksInitHook;
 use MediaWiki\MediaWikiServices;
 use MediaWiki\SpecialPage\Hook\SpecialPage_initListHook;
