@@ -3,7 +3,7 @@
 namespace MediaWiki\Extension\Math;
 
 use DataValues\StringValue;
-use MediaWiki\Html\Html;
+use Html;
 use MediaWiki\MediaWikiServices;
 use Wikibase\DataModel\Entity\EntityId;
 use Wikibase\Lib\Formatters\SnakFormatter;
