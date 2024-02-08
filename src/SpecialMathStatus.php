@@ -6,8 +6,8 @@ use ExtensionRegistry;
 use MediaWiki\Extension\Math\Render\RendererFactory;
 use MediaWiki\Extension\Math\Widget\MathTestInputForm;
 use MediaWiki\Logger\LoggerFactory;
-use MediaWiki\SpecialPage\SpecialPage;
 use Psr\Log\LoggerInterface;
+use SpecialPage;
 
 /**
  * MediaWiki math extension
