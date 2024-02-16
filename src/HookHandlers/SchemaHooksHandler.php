@@ -3,6 +3,7 @@
 namespace MediaWiki\Extension\Math\HookHandlers;
 
 use DatabaseUpdater;
+use LogicException;
 use MediaWiki\Installer\Hook\LoadExtensionSchemaUpdatesHook;
 
 /**
@@ -18,11 +19,22 @@ class SchemaHooksHandler implements LoadExtensionSchemaUpdatesHook {
 	public function onLoadExtensionSchemaUpdates( $updater ) {
 		$type = $updater->getDB()->getType();
 		if ( !in_array( $type, [ 'mysql', 'sqlite', 'postgres' ], true ) ) {
-			return;
+			throw new LogicException( "Math extension does not currently support $type database." );
 		}
 
 		foreach ( [ 'mathoid', 'mathlatexml' ] as $mode ) {
-			$updater->dropExtensionTable( $mode );
+			$updater->addExtensionTable(
+				$mode,
+				__DIR__ . "/../../sql/$type/$mode.sql"
+			);
+		}
+
+		if ( $type === 'mysql' ) {
+			$updater->addExtensionField(
+				'mathoid',
+				'math_png',
+				__DIR__ . '/../../sql/' . $type . '/patch-mathoid.add_png.sql'
+			);
 		}
 	}
 }

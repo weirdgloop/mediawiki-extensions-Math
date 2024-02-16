@@ -11,8 +11,8 @@ namespace MediaWiki\Extension\Math;
 use MediaWiki\Extension\Math\InputCheck\LocalChecker;
 use MediaWiki\Extension\Math\WikiTexVC\MMLnodes\MMLmath;
 use MediaWiki\MediaWikiServices;
-use MediaWiki\SpecialPage\SpecialPage;
 use MediaWiki\Title\Title;
+use SpecialPage;
 use StatusValue;
 
 /**
@@ -21,8 +21,8 @@ use StatusValue;
 class MathNativeMML extends MathMathML {
 	private LocalChecker $checker;
 
-	public function __construct( $tex = '', $params = [], $cache = null ) {
-		parent::__construct( $tex, $params, $cache );
+	public function __construct( $tex = '', $params = [] ) {
+		parent::__construct( $tex, $params );
 		$this->setMode( MathConfig::MODE_NATIVE_MML );
 	}
 
@@ -64,7 +64,7 @@ class MathNativeMML extends MathMathML {
 		return $this->getMathml();
 	}
 
-	public function readFromCache(): bool {
+	public function readFromDatabase() {
 		return false;
 	}
 

@@ -13,7 +13,7 @@
 namespace MediaWiki\Extension\Math;
 
 use LogicException;
-use MediaWiki\Html\Html;
+use Html;
 
 /**
  * Takes LaTeX fragments and outputs the source directly to the browser

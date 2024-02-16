@@ -2,7 +2,7 @@
 
 namespace MediaWiki\Extension\Math\HookHandlers;
 
-use MediaWiki\Config\Config;
+use Config;
 use MediaWiki\Extension\Math\MathConfig;
 use MediaWiki\ResourceLoader\Hook\ResourceLoaderGetConfigVarsHook;
 
