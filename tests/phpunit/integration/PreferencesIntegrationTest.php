@@ -26,7 +26,7 @@ class PreferencesIntegrationTest extends MediaWikiIntegrationTestCase {
 		$context->setTitle( Title::makeTitle( NS_MAIN, 'Dummy' ) );
 		$allPreferences = $this->getServiceContainer()
 			->getPreferencesFactory()
-			->getFormDescriptor( $this->createMock( User::class ), $context );
+			->getFormDescriptor( $this->getTestUser()->getUser(), $context );
 		$this->assertArrayHasKey( 'math', $allPreferences );
 		$mathPrefs = $allPreferences['math'];
 		$this->assertSame( 'radio', $mathPrefs['type'] );
