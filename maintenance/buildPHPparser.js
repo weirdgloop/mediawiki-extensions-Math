@@ -65,7 +65,6 @@ const useStatements =
 	'use MediaWiki\\Extension\\Math\\WikiTexVC\\Nodes\\Big;\n' +
 	'use MediaWiki\\Extension\\Math\\WikiTexVC\\Nodes\\ChemFun2u;\n' +
 	'use MediaWiki\\Extension\\Math\\WikiTexVC\\Nodes\\ChemWord;\n' +
-	'use MediaWiki\\Extension\\Math\\WikiTexVC\\Nodes\\Curly;\n' +
 	'use MediaWiki\\Extension\\Math\\WikiTexVC\\Nodes\\Declh;\n' +
 	'use MediaWiki\\Extension\\Math\\WikiTexVC\\Nodes\\Dollar;\n' +
 	'use MediaWiki\\Extension\\Math\\WikiTexVC\\Nodes\\DQ;\n' +
@@ -110,7 +109,10 @@ if ( options.debug ) {
 		console.log( `Found ${ match }.` );
 	}
 }
-const newParse = parser.replace( regexp, '\\x{00$1}' );
+parser = parser
+	.replace( regexp, '\\x{00$1}' )
+	// declare properties for the parser that were created dynamically before PHP 8.2
+	.replace( /class Parser \{/, 'class Parser {\n    private $tu;\n    private $options;' );
 
-fs.writeFileSync( options.output, newParse );
+fs.writeFileSync( options.output, parser );
 console.log( 'Generated output file at: ' + options.output );

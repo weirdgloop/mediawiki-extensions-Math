@@ -4,6 +4,7 @@
 			"Amire80",
 			"Bashkorttan",
 			"Diman Russkov",
+			"Dirruw'o",
 			"Frhdkazan",
 			"Iltever",
 			"Iniquity",
@@ -88,9 +89,9 @@
 	"math_syntax_error": "синтаксическая ошибка",
 	"math_timeout": "$1 превысило время ожидания от «$2»",
 	"math-test-end": "\nВнутренние тесты для режима рендеринга ''$1'' завершены.",
-	"math-test-fail": "Тестирование ''$1'' <span style=\"color:red\">не прошло</span>.",
+	"math-test-fail": "Тестирование ''$1'' ''не прошло''.",
 	"math-test-start": "\nЗапуск бэкэнд-тестов для режима рендеринга ''$1''.",
-	"math-test-success": "Тестирование «$1» <span style=\"color:green\">прошло успешно</span>.",
+	"math-test-success": "Тест '' $1 '' пройден успешно.",
 	"math-test-contains-diff": "Возвращённая строка $1 не содержит ожидаемой строки $2.",
 	"math-test-equals-diff": "Возвращённая строка $1 отличается от ожидаемой строки $2.",
 	"math-tracking-category-error": "Страницы с ошибками в формулах",
@@ -125,6 +126,5 @@
 	"math-wikibase-special-form-button": "Информация о запросе",
 	"math-wikibase-special-error-header": "Ошибка",
 	"math-wikibase-special-error-invalid-argument": "Указанный вами ID элемента Wikibase не существует.",
-	"math-wikibase-special-error-unknown": "Произошла неизвестная ошибка при получении данных из Wikibase.",
-	"math-wikibase-special-error-no-wikibase": "Для использования этой служебной страницы требуется расширение Wikibase."
+	"math-wikibase-special-error-unknown": "Произошла неизвестная ошибка при получении данных из Wikibase."
 }

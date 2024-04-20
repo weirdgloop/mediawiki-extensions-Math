@@ -72,9 +72,9 @@
 	"math_syntax_error": "errore di sintassi",
 	"math_timeout": "$1 timeout da \"$2\"",
 	"math-test-end": "Test backend per modalità di rappresentazione ''$1'' completato.",
-	"math-test-fail": "Test ''$1'' <span style=\"color:red\">fallito</span>.",
+	"math-test-fail": "Test ''$1'' non riuscito.",
 	"math-test-start": "Esecuzione in corso del test backend per modalità di rappresentazione ''$1''.",
-	"math-test-success": "Test ''$1'' <span style=\"color:green\">riuscito</span>.",
+	"math-test-success": "Test ''$1'' riuscito.",
 	"math-test-contains-diff": "La stringa restituita $1 non contiene la stringa attesa $2.",
 	"math-test-equals-diff": "La stringa restituita $1 è diversa dalla stringa prevista $2.",
 	"math-tracking-category-error": "Pagine con errori matematici",
@@ -110,6 +110,5 @@
 	"math-wikibase-special-form-button": "Richiedi informazioni",
 	"math-wikibase-special-error-header": "Errore",
 	"math-wikibase-special-error-invalid-argument": "L'ID elemento Wikibase indicato non esiste.",
-	"math-wikibase-special-error-unknown": "Si è verificato un errore sconosciuto durante il recupero dei dati da Wikibase.",
-	"math-wikibase-special-error-no-wikibase": "Per utilizzare questa pagina speciale è necessaria l'estensione Wikibase."
+	"math-wikibase-special-error-unknown": "Si è verificato un errore sconosciuto durante il recupero dei dati da Wikibase."
 }

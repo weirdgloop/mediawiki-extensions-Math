@@ -67,7 +67,7 @@
 	"math-form-tex-help": "자체적인 TeX 입력을 가지고 테스트합니다. 더 많은 도움말을 보려면 [[{{int:math-helppage}}|수식 도움말 문서]]를 참고하십시오.",
 	"math-form-type-label": "입력 유형",
 	"math-form-type-tex": "tex (일반 입력)",
-	"math-form-type-chem": "chem (화학 지원이 있는 입력. 예: 물의 경우 <code dir=\"ltr\">\\ce{H20}</code>)",
+	"math-form-type-chem": "chem (화학 지원이 있는 입력. 예: 물의 경우 <code dir=\"ltr\">\\ce{H2O}</code>)",
 	"math-form-display-label": "수식 표시 방식",
 	"math_failure": "구문 분석 실패",
 	"math_invalidjson": "$1 서버 응답은 잘못된 JSON입니다.",
@@ -78,9 +78,9 @@
 	"math_syntax_error": "구문 오류",
 	"math_timeout": "\"$2\"에서의 $1 타임아웃.",
 	"math-test-end": "''$1'' 렌더링 모드의 백엔드 테스트를 완료했습니다.",
-	"math-test-fail": "''$1'' 테스트 <span style=\"color:red\">실패</span>.",
+	"math-test-fail": "''$1'' 테스트 ''실패''.",
 	"math-test-start": "''$1'' 렌더링 모드의 백엔드 테스트를 실행 중입니다.",
-	"math-test-success": "''$1'' 테스트 <span style=\"color:green\">성공</span>.",
+	"math-test-success": "''$1'' 테스트 ''성공''.",
 	"math-test-contains-diff": "반환한 문자열 $1은(는) 예상되는 문자열 $2을(를) 포함하지 않습니다.",
 	"math-test-equals-diff": "반환한 문자열 $1은(는) 예상되는 문자열 $2과(와) 다릅니다.",
 	"math-tracking-category-error": "수식 오류가 있는 문서",
@@ -116,6 +116,5 @@
 	"math-wikibase-special-form-button": "정보 요청",
 	"math-wikibase-special-error-header": "오류",
 	"math-wikibase-special-error-invalid-argument": "당신이 입력한 위키베이스 항목 ID가 존재하지 않습니다.",
-	"math-wikibase-special-error-unknown": "위키베이스에서 데이터를 가져오는 중 알 수 없는 오류가 발생했습니다.",
-	"math-wikibase-special-error-no-wikibase": "이 특수 문서를 이용하려면 Wikibase 확장 기능이 필요합니다."
+	"math-wikibase-special-error-unknown": "위키베이스에서 데이터를 가져오는 중 알 수 없는 오류가 발생했습니다."
 }

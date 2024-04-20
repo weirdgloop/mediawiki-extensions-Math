@@ -23,6 +23,13 @@ class Hooks implements
 	MaintenanceRefreshLinksInitHook
 {
 
+	public static function onExtensionFunctions() {
+		if ( ExtensionRegistry::getInstance()->isLoaded( 'WikibaseClient' ) ) {
+			global $wgRestAPIAdditionalRouteFiles;
+			$wgRestAPIAdditionalRouteFiles[] = dirname( __DIR__ ) . '/popupRestRoutes.json';
+		}
+	}
+
 	/**
 	 * MaintenanceRefreshLinksInit handler; optimize settings for refreshLinks batch job.
 	 *

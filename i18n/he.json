@@ -68,7 +68,7 @@
 	"math-form-tex-help": "בדיקה עם קלט TeX משלך. ר' את [[{{int:math-helppage}}|דף העזרה]] לעזרה נוספת.",
 	"math-form-type-label": "סוג הקלט",
 	"math-form-type-tex": "tex (קלט רגיל)",
-	"math-form-type-chem": "chem (קלט עם תמיכה בכימיה; למשל <code dir=\"ltr\">\\ce{H20}</code> למים)",
+	"math-form-type-chem": "chem (קלט עם תמיכה בכימיה; למשל <code dir=\"ltr\">\\ce{H2O}</code> למים)",
 	"math-form-display-label": "מצב תצוגת נוסחה",
 	"math-helppage": "Help:נוסחאות",
 	"math_failure": "הפענוח נכשל",
@@ -80,9 +80,9 @@
 	"math_syntax_error": "שגיאת תחביר",
 	"math_timeout": "הזמן להכנת $1 מהשרת \"$2\" פג.",
 	"math-test-end": "בדיקות רקע למצב תיצוג ''$1'' הושלמו.",
-	"math-test-fail": "הבדיקת ''$1'' <span style=\"color:red\">נכשלה</span>.",
-	"math-test-start": "הרצת בדיקות רגע למצב התיצוג ''$1''.",
-	"math-test-success": "הבדיקה ''$1'' <span style=\"color:green\">הצליחה</span>..",
+	"math-test-fail": "הבדיקה <span lang=\"en\" dir=\"ltr\">$1</span> ''נכשלה''.",
+	"math-test-start": "הרצת בדיקות רקע למצב התיצוג ''$1''.",
+	"math-test-success": "הבדיקה <span lang=\"en\" dir=\"ltr\">$1</span> ''הצליחה''.",
 	"math-test-contains-diff": "המחרוזת המוחזרת $1 אינה מכילה את המחרוזת הצפויה $2.",
 	"math-test-equals-diff": "המחרוזת המוחזרת $1 שונה מהמחרוזת הצפויה $2.",
 	"math-tracking-category-error": "דפים עם שגיאות בנוסחאות מתמטיות",
@@ -118,6 +118,5 @@
 	"math-wikibase-special-form-button": "בקשת מידע",
 	"math-wikibase-special-error-header": "שגיאה",
 	"math-wikibase-special-error-invalid-argument": "מזהה פריט הוויקיבייס אינו קיים.",
-	"math-wikibase-special-error-unknown": "אירעה שגיאה בלתי־ידועה באחזור נתונים מוויקיבייס.",
-	"math-wikibase-special-error-no-wikibase": "ההרחבה Wikibase נחוצה לשימוש בדף המיוחד הזה."
+	"math-wikibase-special-error-unknown": "אירעה שגיאה בלתי־ידועה באחזור נתונים מוויקיבייס."
 }
